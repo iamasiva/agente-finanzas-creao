@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guía: Agente de Finanzas con CREAO</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --surface: #ffffff;
+      --accent: #1a1a2e;
+      --highlight: #e63946;
+      --text: #1c1c1e;
+      --text-muted: #6b6b76;
+      --border: #e4e4e7;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --code-comment: #6272a4;
+      --code-key: #89b4fa;
+      --code-val: #a6e3a1;
+      --tag-bg: #eef2ff;
+      --tag-text: #4338ca;
+      --warn-bg: #fff8f0;
+      --warn-border: #f4c78a;
+      --warn-text: #92400e;
+      --tip-bg: #f0fdf4;
+      --tip-border: #86efac;
+      --tip-text: #166534;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--accent);
+      color: white;
+      padding: 80px 40px 64px;
+      text-align: center;
+    }
+
+    .hero .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #8090b0;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 46px);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    .hero h1 span { color: var(--highlight); }
+
+    .hero p {
+      font-size: 17px;
+      color: #b0b8d0;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .hero .brand-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #a0a8c0;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+
+    /* LAYOUT */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* REQUISITOS BANNER */
+    .requisitos {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0;
+    }
+
+    .req-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .req-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+    }
+
+    .req-card .req-num {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .req-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .req-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .req-card a {
+      color: var(--highlight);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* STEPS */
+    section.paso {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .paso-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .paso-num {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      background: var(--highlight);
+      color: white;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .paso-header-text .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--highlight);
+      margin-bottom: 4px;
+    }
+
+    .paso-header-text h2 {
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.25;
+    }
+
+    p { margin-bottom: 14px; color: var(--text); }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--accent); }
+    .muted { color: var(--text-muted); }
+
+    /* SUBSTEP */
+    .substeps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .substep {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .substep-dot {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .substep-body { flex: 1; }
+    .substep-body h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .substep-body p { font-size: 14px; margin-bottom: 0; }
+
+    /* CODE BLOCK */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .code-block .code-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--code-comment);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .code-block .code-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .code-block code {
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 13px;
+      color: var(--code-text);
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: block;
+      line-height: 1.7;
+    }
+
+    .code-block code .comment { color: var(--code-comment); }
+    .code-block code .key { color: var(--code-key); }
+    .code-block code .val { color: var(--code-val); }
+    .code-block code .head { color: #f38ba8; font-weight: 700; }
+    .code-block code .section { color: #cba6f7; font-weight: 600; }
+
+    /* PROMPT BOX */
+    .prompt-box {
+      background: #f0f4ff;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .prompt-box .prompt-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .prompt-box p {
+      font-size: 15px;
+      color: #1a1a2e;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* NOTE / TIP */
+    .note {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: var(--warn-text);
+      line-height: 1.6;
+    }
+
+    .note strong { color: var(--warn-text); }
+
+    .tip {
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: var(--tip-text);
+      line-height: 1.6;
+    }
+
+    .tip strong { color: var(--tip-text); }
+
+    /* COLUMNS PREVIEW */
+    .columns-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .columns-preview table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .columns-preview th {
+      background: var(--accent);
+      color: white;
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .columns-preview td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Fira Code', monospace;
+    }
+
+    .columns-preview tr:last-child td { border-bottom: none; }
+    .columns-preview tr:nth-child(even) td { background: var(--bg); }
+
+    /* TAG INLINE */
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      vertical-align: middle;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--accent);
+      color: #8090b0;
+      text-align: center;
+      padding: 48px 24px;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    footer strong { color: white; }
+    footer a { color: #6080c0; text-decoration: none; }
+
+    /* COPY BUTTON */
+    .code-block {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #8090b0;
+      border-radius: 7px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.14);
+      color: #cdd6f4;
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .copy-btn.copied {
+      background: rgba(166,227,161,0.15);
+      border-color: rgba(166,227,161,0.35);
+      color: #a6e3a1;
+    }
+
+    .copy-btn svg { pointer-events: none; }
+
+    /* PROMPT CONFIGURATOR */
+    .prompt-configurator {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0 0;
+    }
+
+    .config-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .config-row {
+      margin-bottom: 16px;
+    }
+
+    .config-row:last-child { margin-bottom: 0; }
+
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-label input[type="checkbox"] { display: none; }
+
+    .toggle-switch {
+      flex-shrink: 0;
+      width: 40px;
+      height: 22px;
+      background: var(--border);
+      border-radius: 999px;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toggle-label input:checked + .toggle-switch {
+      background: var(--highlight);
+    }
+
+    .toggle-label input:checked + .toggle-switch::after {
+      transform: translateX(18px);
+    }
+
+    .toggle-label span.toggle-text {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .config-input-wrap {
+      display: none;
+      margin-top: 10px;
+      margin-left: 52px;
+    }
+
+    .config-input-wrap.visible { display: block; }
+
+    .config-input-wrap input {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .config-input-wrap input:focus {
+      border-color: var(--highlight);
+    }
+
+    .config-input-wrap input::placeholder { color: var(--text-muted); }
+
+    /* PROMPT TEXTAREA (readonly) */
+    .code-block textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 13px;
+      color: var(--code-text);
+      line-height: 1.7;
+      min-height: 480px;
+      padding: 0;
+      cursor: default;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .hero { padding: 56px 24px 48px; }
+      section.paso { padding: 48px 0; }
+      .paso-header { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="brand-tag">IA MASIVA</div>
+    <h1>Tu agente de finanzas<br/>con <span>CREAO</span></h1>
+    <p>Automatiza el registro de tus transacciones bancarias en Google Sheets y tenlas en un dashboard desde tu celular — sin hacer nada manual.</p>
+  </div>
+
+  <!-- REQUISITOS -->
+  <div class="requisitos">
+    <div class="container">
+      <p style="font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--highlight); margin-bottom: 8px;">Antes de empezar</p>
+      <h2 style="font-size: 24px; font-weight: 700; color: var(--accent); margin-bottom: 6px;">Necesitas tener estas tres cosas</h2>
+      <p class="muted" style="font-size: 15px;">Si cumples con las tres, puedes pasar directo al Paso 1.</p>
+
+      <div class="req-grid">
+        <div class="req-card">
+          <div class="req-num">1</div>
+          <h3>Cuenta de Gmail</h3>
+          <p>Necesitas una cuenta activa de Google. Si no tienes, créala en <a href="https://accounts.google.com/" target="_blank">accounts.google.com</a></p>
+        </div>
+        <div class="req-card">
+          <div class="req-num">2</div>
+          <h3>Cuenta en CREAO</h3>
+          <p>Regístrate gratis en <a href="https://agent.creao.ai/@iamasivaa" target="_blank">creao.ai</a> — no necesitas tarjeta de crédito para empezar.</p>
+        </div>
+        <div class="req-card">
+          <div class="req-num">3</div>
+          <h3>Notificaciones de tu banco</h3>
+          <p>Tu banco debe enviarte correos de cada transacción a ese Gmail. Si no lo hace, contacta a tu banco y pídelo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASO 1 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">1</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 1</div>
+          <h2>Prepara tu Google Drive y Google Sheets</h2>
+        </div>
+      </div>
+
+      <p>Entra a tu <strong>Google Drive</strong>, crea una carpeta nueva y llámala <strong>agente creao</strong> — o el nombre que prefieras. Dentro de esa carpeta, crea un archivo de <strong>Google Sheets</strong> con el nombre exacto:</p>
+
+      <div class="code-block">
+        <div class="code-label">Nombre del archivo</div>
+        <code>TRANSACCIONES</code>
+      </div>
+
+      <p>Ahora abre ese archivo. La primera hoja que ves abajo, cámbiale el nombre a <strong>data</strong>. Dentro de esa hoja, agrega los siguientes encabezados empezando desde la celda <strong>A1</strong>:</p>
+
+      <div class="columns-preview">
+        <table>
+          <thead>
+            <tr>
+              <th>A1</th>
+              <th>B1</th>
+              <th>C1</th>
+              <th>D1</th>
+              <th>E1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>fecha</td>
+              <td>tipo</td>
+              <td>categoria</td>
+              <td>monto</td>
+              <td>detalle</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="muted">Ese es todo el setup del Sheets. El agente se encarga del resto.</p>
+    </div>
+  </section>
+
+  <!-- PASO 2 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">2</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 2</div>
+          <h2>Conecta tus herramientas en CREAO</h2>
+        </div>
+      </div>
+
+      <p>Entra a <a href="https://agent.creao.ai/@iamasivaa" target="_blank"><strong>CREAO</strong></a>. En la barra lateral izquierda busca la opción <strong>Cerebro del agente</strong> y entra a <strong>Conectores</strong>.</p>
+
+      <p>Aquí vas a conectar tres servicios:</p>
+
+      <div class="substeps">
+        <div class="substep">
+          <div class="substep-dot">1</div>
+          <div class="substep-body">
+            <h4>Gmail</h4>
+            <p>Para que el agente pueda leer los correos de tu banco.</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">2</div>
+          <div class="substep-body">
+            <h4>Google Drive</h4>
+            <p>Para que pueda encontrar tu archivo de Sheets dentro de tu Drive.</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">3</div>
+          <div class="substep-body">
+            <h4>Google Sheets</h4>
+            <p>Para que pueda escribir las transacciones directamente en tu archivo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top: 24px;">
+        <strong>Importante:</strong> Cada conector te va a pedir permisos de acceso a tu cuenta de Google. Acéptalos todos — sin esos permisos el agente no puede funcionar.
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 3 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">3</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 3</div>
+          <h2>Crea el agente y dale el prompt</h2>
+        </div>
+      </div>
+
+      <p>Dale clic en <strong>Crear un agente</strong>. Cuando te pregunte por un conector, elige <strong>Gmail</strong>. El agente va a empezar a configurarse.</p>
+
+      <p>En la parte donde puedes adjuntar archivos, vas a ver el ícono de <strong>Google Drive</strong>. Selecciónalo, busca tu carpeta y elige el archivo <strong>TRANSACCIONES</strong>.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>Ahora pega este prompt en el agente.</strong> Antes de hacerlo, lee la nota de abajo — necesitas hacer un ajuste según cómo te llegan los correos de tu banco.</p>
+
+      <div class="tip">
+        <strong>Consejo:</strong> Filtrar por asunto o remitente fijo consume muchos menos recursos — el agente va directo al correo que necesita. Si puedes definir alguno de los dos, hazlo.
+      </div>
+
+      <div class="prompt-configurator">
+        <div class="config-title">Personaliza el prompt según tu banco</div>
+
+        <div class="config-row">
+          <label class="toggle-label">
+            <input type="checkbox" id="check-asunto">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">Los correos de mi banco siempre tienen el mismo asunto</span>
+          </label>
+          <div class="config-input-wrap" id="wrap-asunto">
+            <input type="text" id="input-asunto" placeholder="Ej: Alerta de transacción Bancolombia" />
+          </div>
+        </div>
+
+        <div class="config-row">
+          <label class="toggle-label">
+            <input type="checkbox" id="check-correo">
+            <span class="toggle-switch"></span>
+            <span class="toggle-text">Los correos siempre vienen del mismo remitente</span>
+          </label>
+          <div class="config-input-wrap" id="wrap-correo">
+            <input type="text" id="input-correo" placeholder="Ej: alertas@bancolombia.com.co" />
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block" style="margin-top: 4px;">
+        <div class="code-label">Prompt — pégalo en el agente</div>
+        <textarea id="prompt-agente" readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 4 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">4</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 4</div>
+          <h2>Ejecútalo y prográmalo</h2>
+        </div>
+      </div>
+
+      <p>En la sección de <strong>Agentes</strong> ya vas a ver tu agente listo. Cada vez que lo ejecutes, va a revisar los correos del día y registrar las transacciones en tu Sheets automáticamente.</p>
+
+      <p>Al lado del botón de ejecución vas a ver el botón de <strong>Programación</strong>. Configúralo según cada cuánto quieres que el agente se ejecute solo.</p>
+
+      <div class="tip">
+        <strong>Recomendación:</strong> Una vez al día es suficiente para la mayoría de los casos. Ejecuciones más frecuentes consumen más recursos sin agregar mucho valor — las transacciones del mismo día igual se capturan todas en la siguiente corrida.
+      </div>
+
+      <p class="muted" style="margin-top: 16px;">A partir de aquí, el agente trabaja solo. No tienes que hacer nada más en este paso.</p>
+    </div>
+  </section>
+
+  <!-- PASO 5 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">5</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 5</div>
+          <h2>Pídele el código del dashboard a CREAO</h2>
+        </div>
+      </div>
+
+      <p>Google Sheets tiene una extensión llamada <strong>Apps Script</strong> — piénsalo como el equivalente de las macros en Excel. Con ella podemos crear una interfaz visual para los datos de tu Sheets.</p>
+
+      <p>Abre una <strong>nueva conversación en CREAO</strong> (sin crear agente, solo chat). Pega este prompt y espera a que te entregue los dos archivos.</p>
+
+      <div class="code-block">
+        <div class="code-label">Prompt — nueva conversación en CREAO</div>
+        <code><span class="head"># Prompt: Dashboard Web con Google Apps Script</span>
+
+Actúa como un desarrollador experto en Google Apps Script.
+
+<span class="section">## OBJETIVO</span>
+Generar un dashboard web interactivo a partir de los datos
+de un Google Sheets.
+
+<span class="section">## FUENTE DE DATOS</span>
+- Spreadsheet: "TRANSACCIONES"
+- Sheet (pestaña): "data"
+- Columnas:
+  A: fecha / B: tipo (gasto o ingreso) /
+  C: categoria / D: monto / E: detalle
+
+<span class="section">## DASHBOARD</span>
+Incluir:
+- KPIs: Total ingresos, Total gastos, Balance (ingresos - gastos)
+- Gráfico de gastos por categoría (dona)
+- Gráfico de gastos por fecha (barras)
+- Tabla con las últimas transacciones
+
+<span class="section">## TECNOLOGÍA</span>
+- Google Apps Script puro
+- HTMLService para servir el HTML
+- Chart.js (CDN) para los gráficos
+- Diseño oscuro, limpio y moderno
+
+<span class="section">## OUTPUT REQUERIDO</span>
+Entregar DOS archivos completamente listos y claramente identificados:
+
+<span class="key">Archivo 1: Code.gs</span>
+- Solo código JavaScript puro (sin etiquetas HTML)
+- Funciones: doGet() y getDashboardData()
+- doGet() debe retornar HtmlService.createHtmlOutputFromFile('index')
+
+<span class="key">Archivo 2: index.html</span>
+- HTML completo con CSS y JS incluidos
+- Llamar a google.script.run.getDashboardData() para obtener datos
+- Usar Chart.js desde CDN
+- No usar template literals (backticks) en el JS
+
+<span class="section">## INSTRUCCIONES DE INTEGRACIÓN</span>
+Al final, incluir los pasos para implementarlo en Apps Script.
+
+<span class="section">## NOTAS</span>
+- Code.gs NO debe contener ningún carácter HTML
+- El archivo HTML debe llamarse exactamente "index"
+- La URL correcta de la app siempre termina en /exec</code>
+      </div>
+
+      <p>CREAO te va a entregar dos bloques de código: <strong>Code.gs</strong> e <strong>index.html</strong>. No los cierres todavía — los necesitas en el siguiente paso.</p>
+    </div>
+  </section>
+
+  <!-- PASO 6 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">6</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 6</div>
+          <h2>Implementa el dashboard en Apps Script</h2>
+        </div>
+      </div>
+
+      <p>Abre tu archivo <strong>TRANSACCIONES</strong> en Google Sheets. Arriba en el menú ve a <strong>Extensiones → Apps Script</strong>. Ponle un nombre al proyecto — por ejemplo, <em>dashboard financiero</em>.</p>
+
+      <div class="substeps">
+        <div class="substep">
+          <div class="substep-dot">1</div>
+          <div class="substep-body">
+            <h4>Pega el Code.gs</h4>
+            <p>En el editor que se abre, vas a ver un archivo llamado <strong>Código.gs</strong>. Borra todo lo que hay adentro y pega el código de <strong>Code.gs</strong> que te dio CREAO. Guarda con <strong>Ctrl+S</strong> (Mac: Cmd+S).</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">2</div>
+          <div class="substep-body">
+            <h4>Crea el archivo index.html</h4>
+            <p>En la barra lateral izquierda, al lado donde dice <strong>Archivos</strong>, dale en el símbolo <strong>+</strong> y elige <strong>HTML</strong>. Nómbralo exactamente <strong>index</strong> (sin extensión). Borra el contenido por defecto, pega el código de <strong>index.html</strong> que te dio CREAO y guarda.</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">3</div>
+          <div class="substep-body">
+            <h4>Implementa como app web</h4>
+            <p>En la esquina superior derecha dale en <strong>Implementar → Nueva implementación</strong>. En el ícono de configuración elige <strong>App web</strong>. Ponle una descripción, cambia <em>"Solo yo"</em> por <strong>"Cualquiera"</strong> y dale en <strong>Implementar</strong>.</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">4</div>
+          <div class="substep-body">
+            <h4>Otorga los permisos</h4>
+            <p>La primera vez te va a salir una página de error. Busca donde dice <strong>Avanzado</strong> y acepta los permisos. Una vez los otorgas, ya te aparece la URL de tu dashboard.</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">5</div>
+          <div class="substep-body">
+            <h4>Copia la URL y ábrela</h4>
+            <p>Copia el link que termina en <strong>/exec</strong> (no el de /library/) y ábrelo en una nueva pestaña. Ese es tu dashboard.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip" style="margin-top: 24px;">
+        <strong>Para hacer cambios después:</strong> Si quieres modificar el diseño o agregar funciones, edita los archivos, guarda con Ctrl+S y ve a <strong>Implementar → Administrar implementaciones → Editar → Nueva versión → Implementar</strong>. Solo así los cambios quedan activos en la URL.
+      </div>
+
+      <div class="note" style="margin-top: 12px;">
+        <strong>Entender la arquitectura:</strong> <strong>Code.gs</strong> es el backend (lee los datos del Sheets). <strong>index.html</strong> es el frontend (lo que ves en pantalla). Si quieres potenciarlo con vibe coding, modifica ambos con cuidado.
+      </div>
+    </div>
+  </section>
+
+  <!-- PASO 7 -->
+  <section class="paso">
+    <div class="container">
+      <div class="paso-header">
+        <div class="paso-num">7</div>
+        <div class="paso-header-text">
+          <div class="label">Paso 7</div>
+          <h2>Ponlo en tu celular como una app</h2>
+        </div>
+      </div>
+
+      <p>Abre la URL del dashboard en <strong>Chrome desde tu celular</strong>.</p>
+
+      <div class="substeps">
+        <div class="substep">
+          <div class="substep-dot">1</div>
+          <div class="substep-body">
+            <h4>Android</h4>
+            <p>Dale en los <strong>3 puntos</strong> del menú → <strong>Agregar a pantalla de inicio</strong>. Ponle un nombre y listo.</p>
+          </div>
+        </div>
+        <div class="substep">
+          <div class="substep-dot">2</div>
+          <div class="substep-body">
+            <h4>iPhone</h4>
+            <p>Dale en el botón de <strong>Compartir</strong> (el cuadrado con la flecha) → <strong>Agregar a pantalla de inicio</strong>. Ponle un nombre y listo.</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px;">Desde ese momento tienes una app en tu celular que muestra todos tus datos financieros, actualizada automáticamente cada día por el agente — sin que tengas que hacer nada.</p>
+
+      <div class="tip" style="margin-top: 8px;">
+        <strong>Recuerda:</strong> El dashboard se actualiza solo cada vez que el agente de CREAO se ejecuta. Si lo programaste para que corra una vez al día, al día siguiente ya tienes los datos frescos cuando abras la app.
+      </div>
+    </div>
+  </section>
+
+  <script>
+    var copyIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    var checkIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
+    var promptRest = [
+      '',
+      '## INSTRUCCIONES',
+      '',
+      '### 1. FILTRADO DE CORREOS',
+      '- Revisa únicamente correos del día actual.',
+      '- Filtra solo los que coincidan con el asunto o remitente definido.',
+      '- Si no hay correos, reportar "No se encontraron correos hoy" y finalizar.',
+      '',
+      '### 2. EXTRACCIÓN DE DATOS',
+      'De cada correo identificado, extrae:',
+      '- fecha: YYYY-MM-DD (si no aparece, usa la fecha del correo)',
+      '- monto: número sin símbolo de moneda (ej: 45000, 12.50)',
+      '- detalle: referencia exacta del movimiento',
+      '- tipo: "ingreso" (depósito, transferencia recibida) o',
+      '        "gasto" (compra, pago, retiro, transferencia enviada)',
+      '',
+      '### 3. CLASIFICACIÓN DE CATEGORÍA',
+      'Si tipo = "ingreso" → categoria = "ingreso"',
+      '',
+      'Si tipo = "gasto", clasifica en una de estas:',
+      'Flujo Diario:',
+      '  supermercados y plazas / transporte y gasolina /',
+      '  cafés y antojos / retiros ATM / servicios públicos',
+      '',
+      'Estilo de vida:',
+      '  alquiler y administración / salud y farmacia / gimnasio',
+      '',
+      'Consumo:',
+      '  suscripciones digitales / restaurantes y bares /',
+      '  compras online / apps de delivery',
+      '',
+      'Inversión o emergencia:',
+      '  tecnología y electrodomésticos / viajes y turismo /',
+      '  seguros / educación',
+      '',
+      'Usa la categoría más coherente con el detalle.',
+      'Si no encaja, elige la más cercana por contexto.',
+      '',
+      '### 4. GUARDADO EN GOOGLE SHEETS',
+      '- Archivo: "TRANSACCIONES" (en Google Drive)',
+      '- Pestaña: "data"',
+      '- Columnas: A=fecha / B=tipo / C=categoria / D=monto / E=detalle',
+      '- Leer filas existentes ANTES de insertar para evitar duplicados.',
+      '- Duplicado: misma fecha + monto + detalle.',
+      '- Insertar SOLO transacciones nuevas al final. Nunca borrar filas.',
+      '- Si un correo tiene varias transacciones, cada una va en fila separada.',
+      '',
+      '### 5. REPORTE FINAL',
+      'Mostrar:',
+      '- Correos procesados',
+      '- Transacciones extraídas',
+      '- Filas nuevas guardadas',
+      '- Omitidas por duplicado',
+      '- Tabla con detalle de cada transacción guardada',
+      '',
+      '## REGLAS',
+      '- El agente puede ejecutarse varias veces al día sin problema.',
+      '- Nunca fabricar datos que no estén en el correo.',
+      '- Si el correo no contiene una transacción clara, omitirlo.'
+    ].join('\n');
+
+    function buildObjetivo() {
+      var hasAsunto = document.getElementById('check-asunto').checked;
+      var hasCorreo = document.getElementById('check-correo').checked;
+      var asunto = document.getElementById('input-asunto').value.trim();
+      var correo = document.getElementById('input-correo').value.trim();
+
+      var asuntoVal = asunto || '[ASUNTO DE LAS NOTIFICACIONES DE TU BANCO]';
+      var correoVal = correo || '[CORREO DE TU BANCO]';
+
+      if (!hasAsunto && !hasCorreo) {
+        return 'Revisar los correos recibidos HOY en Gmail, identificar los correos que contengan información de transacciones financieras y extraer información de transacciones y guardarla en Google Sheets sin sobrescribir datos existentes.';
+      } else if (hasAsunto && !hasCorreo) {
+        return 'Revisar los correos recibidos HOY en Gmail, identificar los correos cuyo asunto sea "' + asuntoVal + '", y extraer información de transacciones y guardarla en Google Sheets sin sobrescribir datos existentes.';
+      } else if (!hasAsunto && hasCorreo) {
+        return 'Revisar los correos recibidos HOY en Gmail, identificar los correos donde el remitente sea "' + correoVal + '", y extraer información de transacciones y guardarla en Google Sheets sin sobrescribir datos existentes.';
+      } else {
+        return 'Revisar los correos recibidos HOY en Gmail, identificar los correos cuyo asunto sea "' + asuntoVal + '", o donde el remitente sea "' + correoVal + '", y extraer información de transacciones y guardarla en Google Sheets sin sobrescribir datos existentes.';
+      }
+    }
+
+    function updatePrompt() {
+      var objetivo = buildObjetivo();
+      var full = '# Prompt: Automatizador de Finanzas Personales\n# Gmail + Google Sheets\n\nActúa como un agente automatizador de finanzas personales\nconectado a Gmail y Google Sheets.\n\n## OBJETIVO\n' + objetivo + promptRest;
+      document.getElementById('prompt-agente').value = full;
+    }
+
+    // Toggle inputs visibility
+    document.getElementById('check-asunto').addEventListener('change', function() {
+      var wrap = document.getElementById('wrap-asunto');
+      wrap.classList.toggle('visible', this.checked);
+      if (!this.checked) document.getElementById('input-asunto').value = '';
+      updatePrompt();
+    });
+
+    document.getElementById('check-correo').addEventListener('change', function() {
+      var wrap = document.getElementById('wrap-correo');
+      wrap.classList.toggle('visible', this.checked);
+      if (!this.checked) document.getElementById('input-correo').value = '';
+      updatePrompt();
+    });
+
+    document.getElementById('input-asunto').addEventListener('input', updatePrompt);
+    document.getElementById('input-correo').addEventListener('input', updatePrompt);
+
+    // Init prompt on load
+    updatePrompt();
+
+    // Auto-resize prompt textarea to fit content
+    var ta = document.getElementById('prompt-agente');
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+
+    // Copy buttons for all code blocks
+    document.querySelectorAll('.code-block').forEach(function(block) {
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.title = 'Copiar';
+      btn.innerHTML = copyIcon;
+
+      btn.addEventListener('click', function() {
+        var text;
+        var textarea = block.querySelector('textarea');
+        var code = block.querySelector('code');
+        if (textarea) { text = textarea.value; }
+        else if (code) { text = code.innerText; }
+        else { return; }
+
+        navigator.clipboard.writeText(text).then(function() {
+          btn.innerHTML = checkIcon;
+          btn.classList.add('copied');
+          setTimeout(function() {
+            btn.innerHTML = copyIcon;
+            btn.classList.remove('copied');
+          }, 2000);
+        });
+      });
+
+      block.appendChild(btn);
+    });
+  </script>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>IA MASIVA</strong></p>
+    <p>TikTok: <a href="https://tiktok.com/@iamasiva" target="_blank">@iamasiva</a> · Instagram: <a href="https://instagram.com/@iamasivaa" target="_blank">@iamasivaa</a></p>
+    <p style="margin-top: 8px; color: #5a6080;">Guía paso a paso · Agente de finanzas con CREAO</p>
+  </footer>
+
+</body>
+</html>
