@@ -530,6 +530,27 @@
 
     .config-input-wrap input::placeholder { color: var(--text-muted); }
 
+    .config-input-wrap .input-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .config-input-wrap input.input-error {
+      border-color: var(--highlight);
+      animation: shake 0.35s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-6px); }
+      40%       { transform: translateX(6px); }
+      60%       { transform: translateX(-4px); }
+      80%       { transform: translateX(4px); }
+    }
+
     /* PROMPT TEXTAREA (readonly) */
     .code-block textarea {
       width: 100%;
@@ -715,6 +736,7 @@
             <span class="toggle-text">Los correos de mi banco siempre tienen el mismo asunto</span>
           </label>
           <div class="config-input-wrap" id="wrap-asunto">
+            <div class="input-label">¿Cuál es el asunto exacto de esos correos?</div>
             <input type="text" id="input-asunto" placeholder="Ej: Alerta de transacción Bancolombia" />
           </div>
         </div>
@@ -726,6 +748,7 @@
             <span class="toggle-text">Los correos siempre vienen del mismo remitente</span>
           </label>
           <div class="config-input-wrap" id="wrap-correo">
+            <div class="input-label">¿Cuál es el correo exacto del remitente?</div>
             <input type="text" id="input-correo" placeholder="Ej: alertas@bancolombia.com.co" />
           </div>
         </div>
@@ -1064,6 +1087,25 @@ Al final, incluir los pasos para implementarlo en Apps Script.
         if (textarea) { text = textarea.value; }
         else if (code) { text = code.innerText; }
         else { return; }
+
+        // Validar inputs obligatorios cuando el toggle está activo
+        if (textarea) {
+          var emptyInput = null;
+          if (document.getElementById('check-asunto').checked && !document.getElementById('input-asunto').value.trim()) {
+            emptyInput = document.getElementById('input-asunto');
+          } else if (document.getElementById('check-correo').checked && !document.getElementById('input-correo').value.trim()) {
+            emptyInput = document.getElementById('input-correo');
+          }
+          if (emptyInput) {
+            emptyInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            emptyInput.focus();
+            emptyInput.classList.add('input-error');
+            emptyInput.addEventListener('animationend', function() {
+              emptyInput.classList.remove('input-error');
+            }, { once: true });
+            return;
+          }
+        }
 
         navigator.clipboard.writeText(text).then(function() {
           btn.innerHTML = checkIcon;
